@@ -4,6 +4,7 @@ import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { LoginMethod } from "../types";
 import "../styles/Form.css";
+import LoadingIndicator from "./LoadingIndicator";
 
 type FormProps = {
   route: string;
@@ -37,6 +38,7 @@ const Form: FC<FormProps> = ({ route, method }) => {
       <h1>{name}</h1>
       <input className="form-input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
       <input className="form-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+      {loading && <LoadingIndicator />}
       <button className="form-button" type="submit" disabled={loading}>
         {name}
       </button>
