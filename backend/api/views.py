@@ -6,8 +6,7 @@ from .serializers import UserSerializer, NoteSerializer
 from .models import Note
 
 
-class NoteListCreate(generics.ListAPIView):  # automatic view creation handle - by django
-    # queryset = Note.objects.all()     # not valid for lists - use get_queryset!
+class NoteListCreate(generics.ListCreateAPIView):  # automatic view creation handle - by django
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]  # we cannot reach this route unless we are authenticated
 
