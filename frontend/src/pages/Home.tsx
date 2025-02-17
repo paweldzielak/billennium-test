@@ -1,18 +1,15 @@
-import { FC, FormEventHandler, useEffect, useState } from "react";
+import { FC, FormEventHandler, useCallback, useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import api from "../api";
 import Note from "../components/Note";
-import { NoteType } from "../types";
+import { Note as NoteType } from "../types";
 
 const Home: FC = () => {
   const [notes, setNotes] = useState<NoteType[]>([]);
   const [content, setContent] = useState<string>("");
   const [title, setTitle] = useState<string>("");
 
-  useEffect(() => {
-    getNotes();
-  }, []);
-
-  const getNotes = () => {
+  const getNotes = useCallback(() => {
     api
       .get("/api/notes/", {
         headers: {
@@ -24,7 +21,11 @@ const Home: FC = () => {
       .then((data) => {
         setNotes(data);
       });
-  };
+  }, []);
+
+  useEffect(() => {
+    getNotes();
+  }, [getNotes]);
 
   const refreshNotes = () => {
     // FIXME: I think there is a better way to do this
@@ -35,11 +36,11 @@ const Home: FC = () => {
     api
       .delete(`/api/notes/delete/${id}/`)
       .then((res) => {
-        if (res.status === 204) alert("Note deleted!");
-        else alert("Failed to delete note.");
+        if (res.status === 204) toast.success("Note deleted!");
+        else toast.error("Failed to delete note.");
         refreshNotes();
       })
-      .catch((error) => alert(error));
+      .catch((error) => toast.error(error.message ?? "something went wrong"));
   };
 
   const createNote: FormEventHandler = async (event: React.FormEvent<Element>) => {
@@ -47,21 +48,19 @@ const Home: FC = () => {
     api
       .post("/api/notes/", { content, title })
       .then((res) => {
-        if (res.status === 201) alert("Note created!");
-        else alert("Failed to make note.");
-
+        if (res.status === 201) toast.success("Note created!");
+        else toast.error("Failed to make note.");
         refreshNotes();
       })
-      .catch((err) => alert(err));
+      .catch((error) => toast.error(error.message ?? "something went wrong"));
   };
 
   return (
-    <div>
+    <>
+      <Toaster position="bottom-center" reverseOrder={false} />
       <div>
         {!!notes.length && <h2>Notes</h2>}
-        {notes.map((note) => (
-          <Note note={note} onDelete={deleteNote} key={note.id} />
-        ))}
+        {notes.map((note) => <Note note={note} onDelete={deleteNote} key={note.id} />)}
       </div>
       <h2>Create a Note</h2>
       <form onSubmit={createNote}>
@@ -74,7 +73,7 @@ const Home: FC = () => {
         <br />
         <input type="submit" value="Submit"></input>
       </form>
-    </div>
+    </>
   );
 };
 

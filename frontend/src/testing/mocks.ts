@@ -1,6 +1,6 @@
-import { NoteType } from "../types";
+import { Note } from "../types";
 
-export const mockNote1: NoteType = {
+export const mockNote1: Note = {
   id: "1",
   title: "Test Note 1",
   content: "Content 1",
@@ -8,7 +8,7 @@ export const mockNote1: NoteType = {
   date: "2025-02-16T00:00:00.000Z",
 };
 
-export const mockNote2: NoteType = {
+export const mockNote2: Note = {
   id: "2",
   title: "Test Note 2",
   content: "Content 2",
@@ -16,4 +16,4 @@ export const mockNote2: NoteType = {
   date: "2025-02-16T00:00:00.000Z",
 };
 
-export const mockNotes: NoteType[] = [mockNote1, mockNote2];
+export const mockNotes: Note[] = [mockNote1, mockNote2];

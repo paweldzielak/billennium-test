@@ -7,5 +7,3 @@ export type Note = {
   date: string
   created_at: string
 }
-
-export type NoteType = Note

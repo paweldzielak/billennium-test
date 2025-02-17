@@ -1,14 +1,25 @@
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { mockNotes } from "../../testing/mocks";
 import Home from "../Home";
 import api from "../../api";
-import userEvent from "@testing-library/user-event";
-import { mockNotes } from "../../testing/mocks";
 
 vi.mock("../../api/")
-const alertMock = vi.fn();
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(), // Deprecated
+    removeListener: vi.fn(), // Deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
 
-Object.defineProperty(window, "alert", { value: alertMock });
 
 describe("Home Component", () => {
   afterEach(() => {
@@ -70,6 +81,11 @@ describe("Home Component", () => {
     await userEvent.click(deleteButtons[0]);
 
     expect(api.delete).toHaveBeenCalledWith("/api/notes/delete/1/");
-    expect(alertMock).toHaveBeenCalled();
+    const toastText = await screen.findByText('Note deleted!');
+    expect(toastText).toBeInTheDocument();
+  
+    setTimeout(() => {
+      expect(screen.getByText("Note deleted!")).toBeInTheDocument();
+    }, 500);
   });
 });
