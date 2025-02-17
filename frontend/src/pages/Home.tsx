@@ -9,8 +9,8 @@ const Home: FC = () => {
   const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
-    getNotes()
-  }, [])
+    getNotes();
+  }, []);
 
   const getNotes = () => {
     api
@@ -26,34 +26,34 @@ const Home: FC = () => {
       });
   };
 
-  const refreshNotes = ()  => {
+  const refreshNotes = () => {
     // FIXME: I think there is a better way to do this
-    getNotes()
-  }
+    getNotes();
+  };
 
-  const deleteNote = (id: NoteType['id']) => {
-        api
-            .delete(`/api/notes/delete/${id}/`)
-            .then((res) => {
-                if (res.status === 204) alert("Note deleted!");
-                else alert("Failed to delete note.");
-                refreshNotes();
-            })
-            .catch((error) => alert(error));
-    };
+  const deleteNote = (id: NoteType["id"]) => {
+    api
+      .delete(`/api/notes/delete/${id}/`)
+      .then((res) => {
+        if (res.status === 204) alert("Note deleted!");
+        else alert("Failed to delete note.");
+        refreshNotes();
+      })
+      .catch((error) => alert(error));
+  };
 
-    const createNote: FormEventHandler = async (event: React.FormEvent<Element>) => {
-      event.preventDefault();
-      api
-        .post("/api/notes/", { content, title })
-        .then((res) => {
-          if (res.status === 201) alert("Note created!");
-          else alert("Failed to make note.");
-          
-          refreshNotes();
-        })
-        .catch((err) => alert(err));
-    };
+  const createNote: FormEventHandler = async (event: React.FormEvent<Element>) => {
+    event.preventDefault();
+    api
+      .post("/api/notes/", { content, title })
+      .then((res) => {
+        if (res.status === 201) alert("Note created!");
+        else alert("Failed to make note.");
+
+        refreshNotes();
+      })
+      .catch((err) => alert(err));
+  };
 
   return (
     <div>

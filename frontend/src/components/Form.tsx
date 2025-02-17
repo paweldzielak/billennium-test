@@ -1,5 +1,6 @@
 import { FC, FormEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { LoginMethod } from "../types";
@@ -17,7 +18,7 @@ const Form: FC<FormProps> = ({ route, method }) => {
   const [username, setUsername] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const name = method === "login" ? "Login" : "Register";
+
 
   const handleSubmit: FormEventHandler = async (event: React.FormEvent<Element>) => {
     setLoading(true);
@@ -29,20 +30,33 @@ const Form: FC<FormProps> = ({ route, method }) => {
         localStorage.setItem(REFRESH_TOKEN, data.refresh);
         navigate("/");
       } else navigate("/login");
-    });
-    setLoading(false);
+    }).catch(err => {
+      console.error(err)
+      toast.error("Cannot login, try again later.");
+    }).finally( () => setLoading(false));
   };
 
+
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <h1>{name}</h1>
-      <input className="form-input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-      <input className="form-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      {loading && <LoadingIndicator />}
-      <button className="form-button" type="submit" disabled={loading}>
-        {name}
-      </button>
-    </form>
+    <>
+      <Toaster position="bottom-center" reverseOrder={false} />
+      <form onSubmit={handleSubmit} className="form-container">
+        <h1 className="capitalize">{method}</h1>
+        <input className="form-input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+        <input
+          className="form-input"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+        />
+        {method === "login" && <a href="/register">Don't have an account? Register now!</a>}
+        {loading && <LoadingIndicator />}
+        <button className="form-button capitalize" type="submit" disabled={loading}>
+          {method}
+        </button>
+      </form>
+    </>
   );
 };
 
