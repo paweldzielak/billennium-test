@@ -2,8 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+
 from .serializers import UserSerializer, NoteSerializer
 from .models import Note
+
+import json
 
 
 class NoteListCreate(generics.ListCreateAPIView):  # automatic view creation handle - by django
@@ -34,3 +38,11 @@ class CreateUserView(generics.CreateAPIView):  # automatic view creation handle 
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+
+class MyProfile(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response(json.dumps({'username': user.get_username()}))
