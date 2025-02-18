@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { FormButton, FormInput, StyledForm } from "./styles/Form.styled";
 
 type ChatFormProps = {
   sendMessage: (message?: string) => void;
@@ -15,9 +16,9 @@ const ChatForm: FC<ChatFormProps> = ({ sendMessage, isChatEnabled }) => {
   };
 
   return (
-    <form onSubmit={handleSubmitChatNewMessage} className="form-container" style={{ minWidth: "500px" }}>
-      <h1>Write something to everyone!</h1>
-      <input
+    <StyledForm onSubmit={handleSubmitChatNewMessage} $minWidth="400px">
+      <h4>Write something to everyone!</h4>
+      <FormInput
         className="form-input"
         type="text"
         value={message}
@@ -25,10 +26,10 @@ const ChatForm: FC<ChatFormProps> = ({ sendMessage, isChatEnabled }) => {
         placeholder="Your message"
         disabled={!isChatEnabled}
       />
-      <button className="form-button capitalize" type="submit" disabled={!isChatEnabled}>
+      <FormButton type="submit" disabled={!isChatEnabled}>
         Send message
-      </button>
-    </form>
+      </FormButton>
+    </StyledForm>
   );
 };
 

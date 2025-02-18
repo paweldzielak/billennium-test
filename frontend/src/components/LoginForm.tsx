@@ -5,7 +5,7 @@ import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { LoginMethod } from "../types";
 import LoadingIndicator from "./LoadingIndicator";
-import "../styles/Form.css";
+import { FormButton, FormInput, StyledForm } from "./styles/Form.styled";
 
 type LoginFormProps = {
   route: string;
@@ -25,6 +25,8 @@ const LoginForm: FC<LoginFormProps> = ({ route, method }) => {
     await api
       .post(route, { username, password })
       .then(({ data }) => {
+        console.log({ data });
+
         if (method === "login") {
           localStorage.setItem(ACCESS_TOKEN, data.access);
           localStorage.setItem(REFRESH_TOKEN, data.refresh);
@@ -41,10 +43,10 @@ const LoginForm: FC<LoginFormProps> = ({ route, method }) => {
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
-      <form onSubmit={handleSubmit} className="form-container">
-        <h1 className="capitalize">{method}</h1>
-        <input className="form-input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-        <input
+      <StyledForm onSubmit={handleSubmit}>
+        <h1 style={{ textTransform: "capitalize" }}>{method}</h1>
+        <FormInput type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+        <FormInput
           className="form-input"
           type="password"
           value={password}
@@ -53,10 +55,10 @@ const LoginForm: FC<LoginFormProps> = ({ route, method }) => {
         />
         {method === "login" && <a href="/register">Don't have an account? Register now!</a>}
         {loading && <LoadingIndicator />}
-        <button className="form-button capitalize" type="submit" disabled={loading}>
+        <FormButton type="submit" disabled={loading}>
           {method}
-        </button>
-      </form>
+        </FormButton>
+      </StyledForm>
     </>
   );
 };
