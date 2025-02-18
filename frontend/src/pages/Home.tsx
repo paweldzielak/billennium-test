@@ -3,6 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import api from "../api";
 import Note from "../components/Note";
 import { Note as NoteType } from "../types";
+import Chat from "../components/Chat";
 
 const Home: FC = () => {
   const [notes, setNotes] = useState<NoteType[]>([]);
@@ -58,9 +59,12 @@ const Home: FC = () => {
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
+      <Chat />
       <div>
         {!!notes.length && <h2>Notes</h2>}
-        {notes.map((note) => <Note note={note} onDelete={deleteNote} key={note.id} />)}
+        {notes.map((note) => (
+          <Note note={note} onDelete={deleteNote} key={note.id} />
+        ))}
       </div>
       <h2>Create a Note</h2>
       <form onSubmit={createNote}>

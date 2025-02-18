@@ -1,9 +1,8 @@
 import { FC } from "react";
-import Form from "../components/Form";
-
+import LoginForm from "../components/LoginForm";
 
 const Login: FC = () => {
-  return <Form route="/api/token/" method="login" />;
-}
+  return <LoginForm route="/api/token/" method="login" />;
+};
 
 export default Login;

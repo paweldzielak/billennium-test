@@ -1,6 +1,6 @@
 import { FC } from "react";
+import { Note as NoteType } from "../types";
 import "../styles/Note.css";
-import { Note as NoteType} from "../types";
 
 type NoteProps = {
   note: NoteType;
