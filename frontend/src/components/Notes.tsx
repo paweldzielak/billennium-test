@@ -1,4 +1,3 @@
-
 import { FormButton, FormInput, FormTextArea, StyledForm } from "../components/styles/Form.styled";
 import NoteList from "../components/NoteList";
 import { FC, useEffect, useState, FormEventHandler, useCallback } from "react";
@@ -10,7 +9,6 @@ const Notes: FC = () => {
   const [notes, setNotes] = useState<NoteType[]>([]);
   const [content, setContent] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-
 
   const getNotes = useCallback(() => {
     api
@@ -26,10 +24,9 @@ const Notes: FC = () => {
       });
   }, []);
 
-    useEffect(() => {
-      getNotes();
-    }, [getNotes]);
-  
+  useEffect(() => {
+    getNotes();
+  }, [getNotes]);
 
   const deleteNote = (id: NoteType["id"]) => {
     api
@@ -54,12 +51,10 @@ const Notes: FC = () => {
       .catch((error) => toast.error(error.message ?? "something went wrong"));
   };
 
-  
   const refreshNotes = () => {
     // FIXME: I think there is a better way to do this
     getNotes();
   };
-
 
   return (
     <>
@@ -86,6 +81,6 @@ const Notes: FC = () => {
       </StyledForm>
     </>
   );
-}
+};
 
 export default Notes;

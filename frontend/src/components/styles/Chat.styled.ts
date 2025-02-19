@@ -10,4 +10,3 @@ export const ChatContainer = styled.div`
   margin-right: auto;
   padding: 3rem;
 ` 
-

@@ -6,6 +6,7 @@ import "react-tabs/style/react-tabs.css";
 import api from "../api";
 import Chat from "../components/Chat";
 import Notes from "../components/Notes";
+
 const Home: FC = () => {
   const [username, setUsername] = useState<string>("");
 
